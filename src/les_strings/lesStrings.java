@@ -24,8 +24,8 @@ public class lesStrings {
 
 		
 		ConcateWords (userSentenceWord);
-		FindWord(userSentenceWord, ask_user);
-		
+		ChangeWord(userSentenceWord,ask_user,rawUserMessage);
+		ask_user.close();
 	}
 	// this method will be used to concatenate words together, will table a table as parameter
 	static void ConcateWords (String[] WordsTable) {
@@ -39,9 +39,9 @@ public class lesStrings {
 	
 	//this method takes a table of strings and the scanner so we can ask the user the word he wants
 
-	static void FindWord (String[] Table,Scanner ask_user) {
-		System.out.println("Quel mot voulez-vous rechercher?");
-		String WordToFind = ask_user.nextLine();
+	static boolean FindWord (String[] Table,String WordToFind) {
+		//System.out.println("Quel mot voulez-vous rechercher?");
+		//String WordToFind = ask_user.nextLine();
 		
 		boolean WordFound = false;
 		// we will check for each element in the table until we find one that match the wanted word
@@ -51,14 +51,57 @@ public class lesStrings {
 			if (Table[i].equals(WordToFind)) {
 				System.out.println("Oui le mot ' " + WordToFind + " ' est bien dans cette phrase");
 				WordFound = true;
-				break;			
+				return true;			
 			}
 		}
 		if (!WordFound) {
 			System.out.println("Le mot recherché ' " + WordToFind + " ' n'est pas dans la liste");
+			return false;	
 		}
+		return false;
 		
+	}
+	
+	//This method is used to find the reference of the word to change
+	static int FindWordID (String[] Table,String WordToFind) {
+		int wordReference = 0;
+		// we will check for each element in the table until we find one that match the wanted word
+		for (int i = 0; i < Table.length ; i++ ) {
+			
+			//this check if the current word is the one we want then break the loop if we found it, we don't need to continue the loop
+			if (Table[i].equals(WordToFind)) {
+				System.out.println("La référence [] du mot est le numéro : " + wordReference);
+				return wordReference;
+			}
+			wordReference ++; //If it has not been found in the current loop, it will check the next reference
+		}
+
+		return wordReference;
+	}
+	
+	//this function let the user edit a word 
+	static void ChangeWord(String[] Table, Scanner ask_user, String rawUserMessage ) {
+		System.out.println("Voici votre phrase : " + rawUserMessage);
+		System.out.println("Quel mot voulez vous remplacer?");
+		String WordToChange = ask_user.nextLine();
 		
+		String[] Table2 = Table ;
+
+		//Create a loop to find indice of specific word then change it with table[n] = newWord
+		
+		boolean WordExists = lesStrings.FindWord(Table2,WordToChange);
+		
+		if (WordExists) {
+			int WordRef = FindWordID(Table2,WordToChange);
+			System.out.println("Avec quel mot voulez vous le remplacer?");
+			String NewWord = ask_user.nextLine();
+			Table[WordRef] = NewWord;
+			System.out.println("Le nouveau tableau est : " + Arrays.toString(Table));
+			
+		}
+		else {
+			System.out.println("Le mot n'a pas été trouvé");
+		}
 	}
 
 }
