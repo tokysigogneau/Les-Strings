@@ -28,13 +28,15 @@ public class lesStrings {
 		ask_user.close();
 	}
 	// this method will be used to concatenate words together, will table a table as parameter
-	static void ConcateWords (String[] WordsTable) {
+	static String ConcateWords (String[] WordsTable) {
 		String ConcatenateResult = "";
 		
 		for (int i = 0; i < WordsTable.length ; i++) {
 			ConcatenateResult = ConcatenateResult.concat(WordsTable[i]);
 			System.out.println(ConcatenateResult);
+			
 		}
+		return ConcatenateResult;
 	}
 	
 	//this method takes a table of strings and the scanner so we can ask the user the word he wants
